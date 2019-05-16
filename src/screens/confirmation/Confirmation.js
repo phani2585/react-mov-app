@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import green from '@material-ui/core/colors/green';
 
+
  const styles = theme => ({
   close: {
     width: theme.spacing.unit * 4,
