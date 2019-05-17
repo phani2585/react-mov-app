@@ -90,7 +90,7 @@ import { Link } from 'react-router-dom';
         }
         return (
             <div className="details">
-                <Header id={this.props.match.params.id} showBookShowButton="true" />
+                <Header id={this.props.match.params.id} baseUrl={this.props.baseUrl} showBookShowButton="true" />
                 <div className="back">
                     <Typography onClick={this.backToHomeHandler}>
                     <Link to="/"> &#60; Back to Home </Link>
