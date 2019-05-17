@@ -13,6 +13,7 @@ import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import BookShow from '../../screens/bookshow/BookShow';
+import { Link } from 'react-router-dom';
 
 const customStyles = {
     content: {
@@ -146,9 +147,11 @@ class Header extends Component {
                     </div>
                     {this.props.showBookShowButton === "true" ?
                         <div className="bookshow-button">
+                             <Link to={"/bookshow/" + this.props.id}>
                             <Button variant="contained" color="primary" onClick={this.bookShowHandler}>
                                 Book Show
                             </Button>
+                            </Link>
                         </div>
                         : ""}
                 </header>

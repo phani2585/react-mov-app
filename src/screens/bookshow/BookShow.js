@@ -17,7 +17,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Confirmation from '../../screens/bookshow/BookShow';
+import { Link } from 'react-router-dom';
+
+
 
 
 
@@ -59,25 +61,29 @@ import Confirmation from '../../screens/bookshow/BookShow';
         this.setState({ showTime: event.target.value });
     }
     ticketsChangeHandler = (event) => {
-        this.setState({ tickets: event.target.value })
+        this.setState({ tickets: event.target.value });
     }
 
     bookShowButtonHandler = () => {
-        this.state.location === "" ? this.setState({ reqLocation: "dispBlock" }) : this.setState({ reqLocation: "dispNone" });
-        this.state.language === "" ? this.setState({ reqLanguage: "dispBlock" }) : this.setState({ reqLanguage: "dispNone" });
-        this.state.showDate === "" ? this.setState({ reqShowDate: "dispBlock" }) : this.setState({ reqShowDate: "dispNone" });
+        
         this.state.showTime === "" ? this.setState({ reqShowTime: "dispBlock" }) : this.setState({ reqShowTime: "dispNone" });
         this.state.tickets === 0 ? this.setState({ reqTickets: "dispBlock" }) : this.setState({ reqTickets: "dispNone" });
 
-        ReactDOM.render(<Confirmation bookingSummary={this.state} />, document.getElementById('root'));
+        if ((this.state.location === "") || (this.state.language === "") || (this.state.showTime === "") || (this.state.showDate === "") || (this.state.tickets === 0)) { return; }
+
+         this.props.history.push({
+            pathname: '/confirm/' + this.props.match.params.id,
+            bookingSummary: this.state
+        })
     }
     render() {
         return (
             <div>
                 <Header />
                 <div className="bookShow">
-                    <Typography className="back" onClick={this.backToDetailsHandler}>
-                        &#60; Back to Movie Details
+                    
+                    <Typography className="back"> 
+                    <Link to={"/movie/" + this.props.match.params.id}>&#60; Back to Movie Details</Link>
                     </Typography>
 
                     <Card className="cardStyle">

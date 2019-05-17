@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import Header from '../../common/header/Header';
 import './Confirmation.css';
 import BookShow from '../../screens/bookshow/BookShow';
-import Home from '../../screens/home/Home';
-import coupons from '../../common/coupons';
+import coupons from '../../common/coupon';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -19,9 +18,9 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import green from '@material-ui/core/colors/green';
+import { Link } from 'react-router-dom';
 
-
- const styles = theme => ({
+const styles = theme => ({
   close: {
     width: theme.spacing.unit * 4,
     height: theme.spacing.unit * 4,
@@ -31,12 +30,12 @@ import green from '@material-ui/core/colors/green';
   }
 });
 
- class Confirmation extends Component {
+class Confirmation extends Component {
 
-   constructor() {
+  constructor() {
     super();
 
-     this.state = {
+    this.state = {
       open: false,
       couponCode: "",
       totalPrice: 0,
@@ -44,35 +43,35 @@ import green from '@material-ui/core/colors/green';
     }
   }
 
-   componentDidMount() {
+  componentDidMount() {
     let currentState = this.state;
-    currentState.totalPrice = currentState.originalTotalPrice = parseInt(this.props.bookingSummary.unitPrice, 10) * parseInt(this.props.bookingSummary.tickets, 10);
+    currentState.totalPrice = currentState.originalTotalPrice = parseInt(this.props.location.bookingSummary.unitPrice, 10) * parseInt(this.props.location.bookingSummary.tickets, 10);
     this.setState({ state: currentState });
   }
 
-   backToBookShowHandler = () => {
+  backToBookShowHandler = () => {
     ReactDOM.render(<BookShow id={this.props.id} bookingSummary={this.props.bookingSummary} />, document.getElementById('root'));
   }
 
-   confirmBookingHandler = () => {
+  confirmBookingHandler = () => {
     this.setState({ open: true });
   }
 
-   snackBarCloseHandler = () => {
-    ReactDOM.render(<Home />, document.getElementById('root'));
+  snackBarCloseHandler = () => {
+    this.props.history.push("/");
   }
 
-   couponCodeChangeHandler = (e) => {
+  couponCodeChangeHandler = (e) => {
     this.setState({ couponCode: e.target.value });
   }
 
-   couponApplyHandler = () => {
+  couponApplyHandler = () => {
     let currentState = this.state;
     let couponObj = coupons.filter((coupon) => {
       return coupon.code === this.state.couponCode
     })[0];
 
-     if (couponObj !== undefined && couponObj.value > 0) {
+    if (couponObj !== undefined && couponObj.value > 0) {
       currentState.totalPrice = this.state.originalTotalPrice - ((this.state.originalTotalPrice * couponObj.value) / 100);
       this.setState({ currentState });
     } else {
@@ -81,87 +80,89 @@ import green from '@material-ui/core/colors/green';
     }
   }
 
-   render() {
+  render() {
     const { classes } = this.props;
 
-     return (
+    return (
       <div className="Details">
         <Header />
 
-         <div className="confirmation marginTop16">
+        <div className="confirmation marginTop16">
           <div>
-            <Typography className="back" onClick={this.backToBookShowHandler}>
+          <Link to={"/bookshow/" + this.props.match.params.id}>
+            <Typography className="back">
               &#60; Back to Book Show
-            </Typography><br />
+            </Typography>
+            </Link><br />
 
-             <Card className="cardStyle">
+            <Card className="cardStyle">
               <CardContent>
                 <Typography variant="headline" component="h2">
                   SUMMARY
                 </Typography>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Location:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.location}</Typography>
+                    <Typography>{this.props.location.bookingSummary.location}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Language:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.language}</Typography>
+                    <Typography>{this.props.location.bookingSummary.language}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Show Date:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.showDate}</Typography>
+                    <Typography>{this.props.location.bookingSummary.showDate}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Show Time:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.showTime}</Typography>
+                    <Typography>{this.props.location.bookingSummary.showTime}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Tickets:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.tickets}</Typography>
+                    <Typography>{this.props.location.bookingSummary.tickets}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <Typography>Unit Price:</Typography>
                   </div>
                   <div>
-                    <Typography>{this.props.bookingSummary.unitPrice}</Typography>
+                    <Typography>{this.props.location.bookingSummary.unitPrice}</Typography>
                   </div>
                 </div>
                 <br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div>
                     <FormControl className="formControl">
                       <InputLabel htmlFor="coupon">
@@ -176,7 +177,7 @@ import green from '@material-ui/core/colors/green';
                 </div>
                 <br /><br />
 
-                 <div className="coupon-container">
+                <div className="coupon-container">
                   <div className="confirmLeft">
                     <span className="bold">Total Price:</span>
                   </div>
@@ -184,7 +185,7 @@ import green from '@material-ui/core/colors/green';
                 </div>
                 <br />
 
-                 <Button variant="contained" onClick={this.confirmBookingHandler} color="primary">
+                <Button variant="contained" onClick={this.confirmBookingHandler} color="primary">
                   Confirm Booking
                 </Button>
               </CardContent>
@@ -192,7 +193,7 @@ import green from '@material-ui/core/colors/green';
           </div>
         </div>
 
-         <Snackbar
+        <Snackbar
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'center',
@@ -222,8 +223,8 @@ import green from '@material-ui/core/colors/green';
   }
 }
 
- Confirmation.propTypes = {
+Confirmation.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
- export default withStyles(styles)(Confirmation); 
+export default withStyles(styles)(Confirmation);

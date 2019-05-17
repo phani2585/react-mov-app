@@ -10,6 +10,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { Link } from 'react-router-dom';
 
 
 
@@ -71,7 +72,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
      componentWillMount() {
         let currentState = this.state;
         currentState.movie = moviesData.filter((mov) => {
-            return mov.id === this.props.movieId
+            return mov.id === this.props.match.params.id
         })[0];
         this.setState({ currentState });
         console.log(this.state);
@@ -89,10 +90,10 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
         }
         return (
             <div className="details">
-                <Header showBookShowButton="true" />
+                <Header id={this.props.match.params.id} showBookShowButton="true" />
                 <div className="back">
                     <Typography onClick={this.backToHomeHandler}>
-                        &#60; Back to Home
+                    <Link to="/"> &#60; Back to Home </Link>
                         </Typography>
                 </div>
                 <div className="flex-containerDetails">
